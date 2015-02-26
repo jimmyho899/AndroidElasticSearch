@@ -5,6 +5,7 @@ public class SearchHit<T> {
 	private String _type;
 	private String _id;
 	private String _version;
+	private float _score;
 	private boolean found;
 	private T _source;
 
@@ -42,6 +43,14 @@ public class SearchHit<T> {
 
 	public void set_version(String _version) {
 		this._version = _version;
+	}
+	
+	public float get_score() {
+		return _score;
+	}
+	
+	public void set_score(float _score) {
+		this._score = _score;
 	}
 
 	public boolean isFound() {

@@ -1,5 +1,15 @@
 package ca.ualberta.ssrg.movies;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+
+import org.apache.http.client.methods.HttpPost;
+
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +26,7 @@ import ca.ualberta.ssrg.movies.es.ESMovieManager;
 import ca.ualberta.ssrg.movies.es.Movie;
 import ca.ualberta.ssrg.movies.es.Movies;
 import ca.ualberta.ssrg.movies.es.MoviesController;
+import ca.ualberta.ssrg.movies.es.data.SearchResponse;
 
 public class MainActivity extends Activity {
 
@@ -74,11 +85,20 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
-		
 
 		// Refresh the list when visible
 		// TODO: Search all
+		setContentView(R.layout.activity_main);
+		//movies = new Movies();
+		//HttpPost searchRequest = new HttpPost(movies.getSearchUrl());
+		//movies.getSearchUrl();
+		
+		SearchThread search = null; 
+		search.search();
+		
+		moviesViewAdapter = new ArrayAdapter<Movie>(this, R.layout.list_item,movies);
+		movieList.setAdapter(moviesViewAdapter);
+	
 		
 	}
 	
@@ -132,6 +152,14 @@ public class MainActivity extends Activity {
 
 	class SearchThread extends Thread {
 		// TODO: Implement search thread
+		private ESMovieManager movieManager;
+		private Movies movies;
+		
+		public Movies search() {
+			movieManager.searchMovies("", null);
+			this.movies = movieManager.getMovies();
+			return this.movies;
+		}
 		
 	}
 
